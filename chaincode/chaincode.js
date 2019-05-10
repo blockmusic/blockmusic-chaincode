@@ -5,14 +5,18 @@ const Album = require('./album')
 const Song = require('./song')
 
 let Chaincode = class {
-    
-    // initialize chaincode
+
+    /** initialize chaincode
+    * @param {*} stub
+    */ 
     async Init(stub) {
         console.log('============= START : Init method ===========')
         return shim.success()
     }
     
-    // core method to execute the others 
+    /** core method to execute the others 
+    * @param {*} stub
+    */ 
     async Invoke(stub) {
         console.log('============= START : Invoke method ===========')
         let ret = stub.getFunctionAndParameters()
@@ -34,14 +38,13 @@ let Chaincode = class {
         }
     }
     
-    /**
+    /** create Album asset
     * @param {*} stub
     * @arg[0] -- title
     * @arg[1] -- owner
     * @arg[2] -- songs
     * @arg[3] -- producer
-    
-    */ // create Album asset
+    */ 
     async createAlbum(stub, args) {
         console.log('============= START : createAlbum  ===========')
         
@@ -69,14 +72,13 @@ let Chaincode = class {
     }
 
        
-     /**
+    /** create Album asset
     * @param {*} stub
     * @arg[0] -- title
     * @arg[1] -- owner
     * @arg[2] -- songwriter
     * @arg[3] -- producer
-     
-    */ // create Album asset
+    */ 
    async createSong(stub, args) {
     console.log('============= START : createSong  ===========')
     if (args.length != 4)   throw new Error(`Incorrect number of arguments, expecting 4`)
@@ -96,12 +98,10 @@ let Chaincode = class {
     return (helper.jsonToBytes(song.toJSON()))
 }
 
-
-    /**
-      * @param {*} stub
-      * @arg[0] -- id
-      
-      */ // get asset by unique key
+     /** get asset by unique key
+     * @param {*} stub
+     * @arg[0] -- id
+     */ 
     async queryAsset(stub, args) {
         console.log('============= START : queryAsset  ===========')
         if (args.length != 1)   throw new Error(`Incorrect number of arguments, expecting 1`)
@@ -140,7 +140,6 @@ let Chaincode = class {
      /**
     * @param {*} stub
     * @arg[0] -- type
-    
     */ // get asset by asset type 
     async queryAssetsByType(stub, args) {
         console.log('============= START : queryAssetsByType  ===========')
