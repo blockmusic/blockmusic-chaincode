@@ -6,16 +6,16 @@ const Song = require('./song')
 
 let Chaincode = class {
 
-    /** initialize chaincode
-    * @param {*} stub
+   /** initialize chaincode
+    * @param {ChaincodeStub} stub
     */ 
     async Init(stub) {
         console.log('============= START : Init method ===========')
         return shim.success()
     }
     
-    /** core method to execute the others 
-    * @param {*} stub
+   /** core method to execute the others 
+    * @param {ChaincodeStub} stub
     */ 
     async Invoke(stub) {
         console.log('============= START : Invoke method ===========')
@@ -38,9 +38,9 @@ let Chaincode = class {
         }
     }
     
-    /** create Album asset
-    * @param {*} stub
-    * @arg[0] -- title
+   /** create Album asset
+    * @param {ChaincodeStub} stub
+    * @arg[0]  -- title
     * @arg[1] -- owner
     * @arg[2] -- songs
     * @arg[3] -- producer
@@ -72,8 +72,8 @@ let Chaincode = class {
     }
 
        
-    /** create Album asset
-    * @param {*} stub
+   /** create Album asset
+    * @param {ChaincodeStub} stub
     * @arg[0] -- title
     * @arg[1] -- owner
     * @arg[2] -- songwriter
@@ -98,8 +98,8 @@ let Chaincode = class {
     return (helper.jsonToBytes(song.toJSON()))
 }
 
-     /** get asset by unique key
-     * @param {*} stub
+    /** get asset by unique key
+     * @param {ChaincodeStub} stub
      * @arg[0] -- id
      */ 
     async queryAsset(stub, args) {
@@ -111,12 +111,11 @@ let Chaincode = class {
         return result
     }
 
-    /**
-    * @param {*} stub
+   /** get asset by owner 
+    * @param {ChaincodeStub} stub
     * @arg[0] -- Owner
     * @arg[1] -- (optional) assetType
-    
-    */ // get asset by owner 
+    */ 
     async queryAssetsByOwner(stub, args) {
         if (args.length < 1) throw new Error("Takes at least one argument! ")
         let query = {
@@ -137,10 +136,10 @@ let Chaincode = class {
         return Buffer.from(JSON.stringify(result))
     }
 
-     /**
-    * @param {*} stub
+   /** get asset by asset type 
+    * @param {ChaincodeStub} stub
     * @arg[0] -- type
-    */ // get asset by asset type 
+    */ 
     async queryAssetsByType(stub, args) {
         console.log('============= START : queryAssetsByType  ===========')
         if (args.length != 1)   throw new Error(`Incorrect number of arguments, expecting 1`)
@@ -160,11 +159,10 @@ let Chaincode = class {
         return (helper.jsonToBytes(result))
     }
 
- /**
-    * @param {*} stub
+   /** get asset transaction history by unique key
+    * @param {ChaincodeStub} stub
     * @arg[0] -- key
-    
-    */ // get asset transaction history by unique key
+    */ 
     async queryHistory(stub, args) {
         console.log('============= START : queryHistory  ===========')
         if (args.length != 1)   throw new Error(`Incorrect number of arguments, expecting 1`)
