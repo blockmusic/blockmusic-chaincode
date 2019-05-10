@@ -175,6 +175,8 @@ let Chaincode = class {
     }
 
 };
-shim.start(new Chaincode());
+
+
+module.exports = Chaincode;
 
 
