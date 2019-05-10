@@ -2,7 +2,6 @@ const ClientIdentity = require('fabric-shim').ClientIdentity;
 
 class Helper {
     
-    // convert iterator to array of objects
     static async getAllResults(iterator, isHistory) {
         let allResults = [];
         while (true) {
@@ -42,7 +41,6 @@ class Helper {
         }
     }
 
-    // generate unique id 
     static generateID(){
             var text = ""
             var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -62,7 +60,7 @@ class Helper {
         let result = JSON.stringify(response);
         return Buffer.from(result);
     }
-
+    
     static getTransactionMaker(stub){
         console.log('============= START : getTransactionMaker  ===========')
 
@@ -79,11 +77,11 @@ class Helper {
         }
     }
 
-
-          
-
     
 
 }
 
 module.exports = Helper
+
+
+
