@@ -1,6 +1,6 @@
 
 
-class Album{
+module.exports = class Album{
     constructor(id, title, owner, songs, producer){
         this.id = id
         this.title = title
@@ -34,5 +34,3 @@ class Album{
     }
 
 }
-
-module.exports = Album

@@ -21,11 +21,12 @@ sleep 5
 echo "Installing chaincode..."
 docker exec cliFabric peer chaincode install -n ${CONTRACT_NAME} -v 0 -p /opt/gopath/src/github.com -l node
 echo "Instantiating chaincode..."
-docker exec cliFabric peer chaincode instantiate -n ${CONTRACT_NAME} -v 0 -l node -c '{"Args":[""]}' -C mychannel -P "AND ('Org1MSP.member')"
+docker exec cliFabric peer chaincode instantiate -n ${CONTRACT_NAME} -v 0 -l node -c '{"Args":["initLedger"]}' -C mychannel -P "AND ('Org1MSP.member')"
 echo "Invoking chaincode..."
 sleep 10
-docker exec cliFabric peer chaincode invoke -n ${CONTRACT_NAME} -c '{"function":"createAlbum","Args":["About me", "Me", "How i know", "Me"]}' -C mychannel
-sleep 10
-echo "Querying chaincode..."
-docker exec cliFabric peer chaincode query -C mychannel -n ${CONTRACT_NAME}  -c '{"Args":["queryAssetsByType", "Album"]}'
+docker exec cliFabric peer chaincode invoke -n ${CONTRACT_NAME} -c '{"Args":["createAlbum","About me", "Me", "How i know", "Me"]}' -C mychannel
+# sleep 10
+# echo "Querying chaincode..."
+# docker exec cliFabric peer chaincode query -C mychannel -n ${CONTRACT_NAME}  -c '{"Args":["queryAssetsByType", "Album"]}'
+
 
