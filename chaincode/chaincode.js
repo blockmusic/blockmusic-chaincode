@@ -1,7 +1,7 @@
 'use strict';
 
 const { Contract } = require('fabric-contract-api');
-const helper = require('./helper'); 
+const Helper = require('./helper'); 
 const Album = require('./album');
 const Song = require('./song');
 
@@ -29,7 +29,7 @@ class Chaincode extends Contract {
          if (!title && !owner && !songs && !producer)   throw new Error(`Incorrect number of arguments, expecting 4 `)
         
          // generate an id for the asset
-         const id = helper.generateID()
+         const id = Helper.generateID()
          
          // check if it already exists
          const albumAsBytes = await ctx.stub.getState(id)
@@ -39,27 +39,52 @@ class Chaincode extends Contract {
          let album = new Album(id, title, owner, songs, producer)
  
          // fill transaction data into payload
-         const transactionMaker = helper.getTransactionMaker(ctx.stub)
+         const transactionMaker = Helper.getTransactionMaker(ctx.stub)
          album.setTransactionType("createAlbum", transactionMaker)
  
          // record it onto the ledger
-         await ctx.stub.putState(id, helper.jsonToBytes(album.toJSON()))
+         await ctx.stub.putState(id, Helper.jsonToBytes(album.toJSON()))
          console.log('============= END : createAlbum  ===========')
-         return  (helper.jsonToBytes(album.toJSON()))
+         return  (album.toJSON())
     }
     /** get asset by unique key
      * @param {Context} ctx 
      * @param {String} assetId
      */ 
     async queryAsset(ctx, assetId) {
+        console.info('============= START : Query Device By IDs ==========='); 
+        if(!assetId)    throw new Error("Missing assetId.")
+
         const assetAsBytes = await ctx.stub.getState(assetId); 
-        if (!assetAsBytes || assetAsBytes.length === 0) {
-            throw new Error(`${assetId} does not exist`);
-        }
-        console.log(assetAsBytes.toString());
+        if (!assetAsBytes || assetAsBytes.length === 0) throw new Error(`${assetId} does not exist`);
+        
         console.log(JSON.parse(assetAsBytes))
         return JSON.parse(assetAsBytes);
     }
+
+   /** get asset by asset type 
+    * @param {Context} ctx 
+    * @arg[0] -- assetType
+    */ 
+   async queryAssetsByType(ctx, assetType) {
+    console.log('============= START : queryAssetsByType  ===========')
+    if (!assetType)   throw new Error(`Expecting assetType`)
+
+    let query = {
+        selector: {
+            assetType: {
+                "$regex": assetType
+            }
+        }
+    };
+
+    let iterator = await ctx.stub.getQueryResult(JSON.stringify(query))
+    let assets = await Helper.getAllResults(iterator, false)
+
+    console.log('============= END : queryAssetsByType  ===========')
+    return JSON.parse(JSON.stringify(assets))
+}
+
 
 
 }
