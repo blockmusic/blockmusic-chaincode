@@ -78,3 +78,5 @@ typings/
 
 #vscode trash
 .vs*
+
+/test.js
