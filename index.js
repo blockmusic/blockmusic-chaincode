@@ -4,7 +4,7 @@
 
 'use strict';
 
-const BlockmusicContract = require('./lib/album-contract');
+const BlockmusicContract = require('./lib/blockmusic-contract');
 
 module.exports.BlockmusicContract = BlockmusicContract;
 module.exports.contracts = [ BlockmusicContract ];
