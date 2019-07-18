@@ -80,3 +80,5 @@ typings/
 .vs*
 
 /test.js
+
+package-lock.json
